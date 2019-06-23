@@ -1,7 +1,18 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
 import Counter from './Counter';
 
 class Player extends PureComponent {
+  //with static you don't need to instanciate the class to access Proptypes
+  static propTypes = {
+    changeScore: PropTypes.func,
+    removePlayer: PropTypes.func,
+    name: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+    id: PropTypes.number,
+  }
+
   render () {
     // use variable assignment to destructure props in classes
     const {
@@ -12,7 +23,7 @@ class Player extends PureComponent {
       changeScore,
       removePlayer
     } = this.props
-    
+
     return (
       <div className="player">
         <span className="player-name">
