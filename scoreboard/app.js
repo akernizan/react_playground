@@ -1,27 +1,3 @@
-const players = {
-  {
-   name: "Akosua",
-   score: 50,
-   id:1
-  },
-  {
-   name: "Michael",
-   score: 85,
-   id:2
-  },
-  {
-   name: "Lisa",
-   score: 95,
-   id:3
-  },
-  {
-   name: "Machada",
-   score: 80,
-   id:4
-  }
-}
-
-
 const Header = (props) => {
   return  (
     <header>
@@ -37,19 +13,41 @@ const Player = (props) => {
       <span className="player-name">
         {props.name}
       </span>
+      <Counter score={props.score} />
     </div>
-
-    <Counter score={props.score}/>
   );
 }
 
 class Counter extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      score: 0
+    };
+  }
+
+  incrementScore(){
+    this.setState(prevState => {
+      return{
+        score: prevState.score + 1
+      }
+    });
+  }
+
+  decrementScore(){
+    this.setState(prevState => {
+      return {
+        score: prevState.score - 1
+      }
+    });
+  }
+
   render() {
     return (
       <div className="counter">
-        <button className="counter-action decrement"> - </button>
-        <span className="counter-score"> {props.score} </span>
-        <button className="counter-action increment"> + </button>
+        <button className="counter-action decrement" onClick={this.decrementScore.bind(this)}> - </button>
+        <span className="counter-score"> {this.state.score} </span>
+        <button className="counter-action increment" onClick={this.incrementScore.bind(this)}> + </button>
       </div>
     );
 
@@ -57,24 +55,46 @@ class Counter extends React.Component {
 
 }
 
-const App = (props) => {
-  return (
-    <div className="scoreboard">
-      <Header title="Scoreboard" totalPlayers={props.initialPlayers.length}/>
+class App extends React.Component {
+  state = {
+    players: [  {
+       name: "Akosua",
+       id:1
+      },
+      {
+       name: "Michael",
+       id:2
+      },
+      {
+       name: "Lisa",
+       id:3
+      },
+      {
+       name: "Machada",
+       id:4
+      }]
+  }
 
-      {/* Players list*/}
-      {props.initialPlayers.map( player =>
-          <Player
-            name={player.name}
-            score={player.score}
-            key={player.id.toString()}
-          />
-      )}
-    </div>
-  );
+  render(){
+    return (
+      <div className="scoreboard">
+        <Header title="Scoreboard" totalPlayers={this.state.players.length}/>
+
+        {/* Players list*/}
+        {this.state.players.map( player =>
+            <Player
+              name={player.name}
+              score={player.score}
+              key={player.id.toString()}
+            />
+        )}
+      </div>
+    );
+  }
+
 }
 
 ReactDOM.render(
-  <App initialPlayers={players}/>,
+  <App />,
   document.getElementById('root')
 );
